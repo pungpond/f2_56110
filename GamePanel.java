@@ -20,7 +20,7 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		try {
 			bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
-			img = ImageIO.read(new File("GitHub\\f2_56110\\img\\space-2.jpg"));
+			img = ImageIO.read(new File("GitHub\\f2_56110\\img\\space.jpg"));
 			big = (Graphics2D) bi.getGraphics();
 			big.setBackground(Color.BLACK);
 		} catch (IOException exp) {
