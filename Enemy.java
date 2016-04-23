@@ -19,7 +19,7 @@ public class Enemy extends Sprite{
 	BufferedImage ena;
 	
 	public Enemy(int x, int y) {
-		super(x, y, 50, 47);
+		super(x, y, 30, 27);
 		
 	}
 
@@ -53,5 +53,9 @@ public class Enemy extends Sprite{
 	
 	public boolean isAlive(){
 		return alive;
+	}
+
+	public void getAlive(boolean del){
+		alive = del;
 	}
 }

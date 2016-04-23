@@ -12,6 +12,7 @@ public class SpaceShip extends Sprite{
 
 	int step = 8;
 	BufferedImage player;
+	int blood = 3;
 	
 	public SpaceShip(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -39,4 +40,10 @@ public class SpaceShip extends Sprite{
 			x = 400 - width;
 	}
 
+	public void decBlood(){
+		blood--;
+	}
+	public int getBlood(){
+		return blood;
+	}
 }

@@ -62,7 +62,7 @@ public class GameEngine implements KeyListener, GameReporter {
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				//score += 100;
+				score += 100;
 			}
 		}
 		gp.updateGameUI(this);
@@ -72,7 +72,12 @@ public class GameEngine implements KeyListener, GameReporter {
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
+				e.getAlive(false);
+				v.decBlood();
+				gp.sprites.remove(e);
+				enemies.remove(e);
+				if(v.getBlood() == 0)
+					die();
 				return;
 			}
 		}
@@ -99,6 +104,10 @@ public class GameEngine implements KeyListener, GameReporter {
 	
 	public long getScore(){
 		return score;
+	}
+
+	public int getBlood_v(){
+		return v.getBlood();
 	}
 	
 	@Override
