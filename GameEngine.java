@@ -19,13 +19,16 @@ public class GameEngine implements KeyListener, GameReporter {
 	private SpaceShip v;	
 	
 	private Timer timer;
-	
-	private long score = 0;
+	private int level;
+	private int levelTh;
+	private int score = 0;
 	private double difficulty = 0.1;
 	
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
-		this.v = v;		
+		this.v = v;
+		level=1;
+		levelTh=5000;		
 		
 		gp.sprites.add(v);
 		
@@ -57,6 +60,11 @@ public class GameEngine implements KeyListener, GameReporter {
 	}
 
 	private void process(){
+		if(levelTh < score){
+			level++;
+			levelTh*=2;
+		}
+
 		if(Math.random() < difficulty){
 			generateEnemy();
 			
@@ -73,7 +81,7 @@ public class GameEngine implements KeyListener, GameReporter {
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
-			e.proceed();
+			e.proceed(level);
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
@@ -84,7 +92,7 @@ public class GameEngine implements KeyListener, GameReporter {
 		Iterator<Item> item_iter = items.iterator();
 		while(item_iter.hasNext()){
 			Item it = item_iter.next();
-			it.proceed();
+			it.proceed(0);
 			if(!it.isAlive()){
 				item_iter.remove();
 				gp.sprites.remove(it);
@@ -151,12 +159,16 @@ public class GameEngine implements KeyListener, GameReporter {
 	}
 	
 	
-	public long getScore(){
+	public int getScore(){
 		return score;
 	}
 
 	public int getBlood_v(){
 		return v.getBlood();
+	}
+
+	public int getLevel_v(){
+		return level;
 	}
 	
 	@Override

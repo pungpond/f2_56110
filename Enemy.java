@@ -34,8 +34,8 @@ public class Enemy extends Sprite{
         g.drawImage(ena, x, y, width, height, null);
 	}
 
-	public void proceed(){
-		y += step;
+	public void proceed(int x){
+		y += step + (x*2);
 		if(y > Y_TO_DIE){
 			alive = false;
 		}
