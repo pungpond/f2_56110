@@ -19,29 +19,19 @@ public class Enemy extends Sprite{
 	BufferedImage ena;
 	
 	public Enemy(int x, int y) {
-		super(x, y, 30, 27);
+		super(x, y, 20, 17);
 		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		if(y < Y_TO_FADE)
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-		else{
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
-					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
-		}
-
 		try {
 			ena = ImageIO.read(new File("GitHub\\f2_56110\\img\\lois.png"));
-			
 		} catch (IOException exp) {
             
         }
-
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
         g.drawImage(ena, x, y, width, height, null);
-		
-		
 	}
 
 	public void proceed(){
@@ -55,7 +45,7 @@ public class Enemy extends Sprite{
 		return alive;
 	}
 
-	public void getAlive(boolean del){
+	public void setAlive(boolean del){
 		alive = del;
 	}
 }

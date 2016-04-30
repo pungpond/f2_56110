@@ -15,6 +15,7 @@ public class GameEngine implements KeyListener, GameReporter {
 	GamePanel gp;
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private ArrayList<Item> items = new ArrayList<Item>();
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -42,37 +43,65 @@ public class GameEngine implements KeyListener, GameReporter {
 	public void start(){
 		timer.start();
 	}
-	
+
 	private void generateEnemy(){
 	 	Enemy e = new Enemy((int)(Math.random()*390), 30);
 	 	gp.sprites.add(e);
 	 	enemies.add(e);
 	}
 
+	private void generateItem(String name){
+ 		Item t = new Item((int)(Math.random()*390), 30, name);
+ 	 	gp.sprites.add(t);
+ 		items.add(t);
+	}
+
 	private void process(){
 		if(Math.random() < difficulty){
 			generateEnemy();
+			
 		}
-		
+
+		if(Math.random() < difficulty/2){
+			generateItem("hp");
+		}
+
+		if(Math.random() < difficulty/3){
+			generateItem("imm");
+		}
+
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
 			e.proceed();
-			
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
 				score += 100;
 			}
 		}
+
+		Iterator<Item> item_iter = items.iterator();
+		while(item_iter.hasNext()){
+			Item it = item_iter.next();
+			it.proceed();
+			if(!it.isAlive()){
+				item_iter.remove();
+				gp.sprites.remove(it);
+			}
+		}
+
+
+
+
 		gp.updateGameUI(this);
 		Rectangle2D.Double vr = v.getRectangle();
-
 		Rectangle2D.Double er;
+		Rectangle2D.Double t_it;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				e.getAlive(false);
+				e.setAlive(false);
 				v.decBlood();
 				gp.sprites.remove(e);
 				enemies.remove(e);
@@ -81,6 +110,26 @@ public class GameEngine implements KeyListener, GameReporter {
 				return;
 			}
 		}
+
+		for(Item it : items){
+			t_it = it.getRectangle();
+			if(t_it.intersects(vr)){
+				switch(it.getItemType()){
+					case "hp":
+						v.incBlood();
+						break;
+					case "imm":
+						v.setImm();
+						break;
+				}
+				it.setAlive(false);
+				gp.sprites.remove(it);
+				items.remove(it);
+				return;
+			}
+		}
+
+
 	}
 
 	public void die(){
